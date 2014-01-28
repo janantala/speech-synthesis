@@ -181,18 +181,29 @@
     <h3>Usage:</h3>
 
     <p class="code code-html">
-      <span class="code-vial">speechSynthesis.speak(SpeechSynthesisUtterance('Hello World'));</span>
+      <span class="code-vial">speechSynthesis.speak(new SpeechSynthesisUtterance('Hello World'));</span>
     </p>
 
     <p>
-      <label for="text">Text:</label>
+      
     </p>
     <p>
       <form ng-submit="speak(text)">
+        <label for="text">Text:</label>
         <textarea type="text" id="text" class="textarea" ng-model="text" placeholder="YOUR TEXT TO SPEECH"></textarea>
-        <button type="submit" >Speak</button>
+
+        <p>
+          <label for="lang">Lang:</label>
+          <input type="text" ng-model="lang" id="lang">
+        </p>
+        <button type="submit" >Add to queue</button>
       </form>
-      
+    </p>
+
+    <p>
+      <button ng-click="pause()">Pause</button>
+      <button ng-click="resume()">Resume</button>
+      <button ng-click="cancel()">Cancel</button>
     </p>
 
   </div>
@@ -204,31 +215,50 @@
 
 </div>
 
-<!-- <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.3/angular.min.js"></script> -->
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.3/angular.min.js"></script>
 <script src="polyfill.js"></script>
 
 <script>
-// angular.module('adaptiveApp', []).
 
-// controller('AdaptiveCtrl', function ($scope) {
-//   $scope.text = 'YOUR TEXT TO SPEECH';
+var u = new SpeechSynthesisUtterance();
+u.text = 'Hello World! This is a very long, very very long.';
+u.lang = 'en-US';
+u.volume = 0.1; // 0 to 1
+u.rate = 0.5; // 0.1 to 10
+u.pitch = 2; //0 to 2
+u.onend = function(event) { console.log('Finished in ' + event.elapsedTime + ' seconds.'); };
+u.onpause = function(event) { console.log('Paused in ' + event.elapsedTime + ' seconds.'); };
+u.onresume = function(event) { console.log('Resumed in ' + event.elapsedTime + ' seconds.'); };
+speechSynthesis.speak(u);
+speechSynthesis.speak(new SpeechSynthesisUtterance('I am the second one!'));
+speechSynthesis.speak(new SpeechSynthesisUtterance('And I am the last one!'));
 
-//   $scope.speak = function(text){
-//     console.log(SpeechSynthesisUtterance);
-//     console.log(speechSynthesis);
-//     speechSynthesis.speak(SpeechSynthesisUtterance('Hello World'));
 
-//     // var u = new SpeechSynthesisUtterance();
-//     // u.text = 'Hello World';
-//     // u.lang = 'en-US';
-//     // u.rate = 1.2;
-//     // u.onend = function(event) { alert('Finished in ' + event.elapsedTime + ' seconds.'); }
-//     // speechSynthesis.speak(u);
-//   };
-// });
-// 
+angular.module('adaptiveApp', []).
 
-    // 
+controller('AdaptiveCtrl', function ($scope) {
+  $scope.text = 'YOUR TEXT TO SPEECH';
+  $scope.lang = 'en-US';
+
+  $scope.speak = function(text){
+    speechSynthesis.speak(new SpeechSynthesisUtterance(text));
+  };
+
+  $scope.pause = function(){
+    speechSynthesis.pause();
+  };
+
+  $scope.resume = function(){
+    speechSynthesis.resume();
+  };
+
+  $scope.cancel = function(){
+    speechSynthesis.cancel();
+  };
+});
+
+
+    
 </script>
 </body>
 </html>
