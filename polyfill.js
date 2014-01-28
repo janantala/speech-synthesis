@@ -41,7 +41,7 @@
   var SpeechSynthesis = function(){
     var utterances = [];
 
-    this.pending = false;
+    this.pending = true;
     this.speaking = false;
     this.paused = false;
 
@@ -58,26 +58,25 @@
 
       if (!that.paused) {
         that.pending = false;
+        that.speaking = true;
         resume();
       }
     };
 
     var cancel = function(){
-      utterance = undefined;
+      utterances = [];
       console.log(that);
     };
 
     var pause = function(){
       audio.pause();
       that.paused = true;
-      that.speaking = false;
       console.log(that);
     };
 
     var resume = function(){
       audio.play();
       that.paused = false;
-      that.speaking = true;
       console.log(that);
     };
 
