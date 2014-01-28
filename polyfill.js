@@ -186,16 +186,12 @@
       that.paused = false;
       utteranceQueue = [];
       playNext(utteranceQueue);
-
-      console.log(that);
     };
 
     var pause = function(){
       audio.pause();
       that.speaking = false;
       that.paused = true;
-
-      console.log(that);
     };
 
     var resume = function(){
@@ -208,8 +204,6 @@
       }
 
       that.paused = false;
-
-      console.log(that);
     };
 
     // Method is not supported

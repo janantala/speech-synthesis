@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>speech-synthesis-polyfill</title>
+  <title>speech-synthesis</title>
   <link href='http://fonts.googleapis.com/css?family=Titillium+Web:200,300' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Droid+Sans+Mono' rel='stylesheet' type='text/css'>
   <link rel="icon" type="image/png" href="img/logo.png">
@@ -16,6 +16,7 @@
       padding: 0;
       margin: 0;
       text-align: center;
+      height: 100%;
     }
 
     * {
@@ -29,6 +30,16 @@
       padding: 10px 0;
     }
 
+    footer {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+    }
+
+    .div {
+      position: relative;
+      padding-bottom: 150px;
+    }
 
     a {
       color: white;
@@ -43,6 +54,10 @@
       text-align: center;
     }
 
+    .text-left {
+      text-align: left;
+    }
+
     .title {
       color: white;
       font-weight: 100;
@@ -54,8 +69,10 @@
 
     .body {
       margin: 0 auto;
-      width: 960px;
+      width: 100%;
+      max-width: 600px;
       min-height: 600px;
+      padding: 10px;
     }
 
     .ribbon-wrapper {
@@ -146,23 +163,23 @@
 </head>
 <body class="container" ng-app="adaptiveApp">
 
-  <div ng-controller="AdaptiveCtrl">
+  <div ng-controller="AdaptiveCtrl" class="div">
 
   <header>
-    <h1 class="text-center title">speech-synthesis-polyfill</h1>
+    <h1 class="text-center title">speech-synthesis</h1>
     <p class="text-center title"><i>Speech Synthesis polyfill</i></p>
 
-    <a href="https://github.com/janantala/speech-synthesis-polyfill"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png" alt="Fork me on GitHub"></a>
+    <a href="https://github.com/janantala/speech-synthesis"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png" alt="Fork me on GitHub"></a>
 
     <p class="code">
-      <span class="code-prompt code-vial">❯</span> bower install <span class="code-yellow">speech-synthesis-polyfill</span>
+      <span class="code-prompt code-vial">❯</span> bower install <span class="code-yellow">speech-synthesis</span>
     </p>
 
     <p>
-      <iframe src="http://ghbtns.com/github-btn.html?user=janantala&repo=speech-synthesis-polyfill&type=watch&count=true"
+      <iframe src="http://ghbtns.com/github-btn.html?user=janantala&repo=speech-synthesis&type=watch&count=true"
     allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
 
-      <iframe src="http://ghbtns.com/github-btn.html?user=janantala&repo=speech-synthesis-polyfill&type=fork"
+      <iframe src="http://ghbtns.com/github-btn.html?user=janantala&repo=speech-synthesis&type=fork"
     allowtransparency="true" frameborder="0" scrolling="0" width="53" height="20"></iframe>
 
       <iframe src="http://ghbtns.com/github-btn.html?user=janantala&type=follow"
@@ -175,20 +192,24 @@
     <h3>Load dependecies:</h3>
 
     <p class="code code-html">
-      <span>&lt;script src="bower_components/speech-synthesis-polyfill/polyfill.min.js"&gt;&lt;/script&gt;</span>
+      <span>&lt;script src="bower_components/speech-synthesis/polyfill.min.js"&gt;&lt;/script&gt;</span>
     </p>
 
     <h3>Usage:</h3>
 
-    <p class="code code-html">
-      <span class="code-vial">speechSynthesis.speak(new SpeechSynthesisUtterance('Hello World'));</span>
+    <p class="code code-html text-left">
+      <span class="">var u = new SpeechSynthesisUtterance('Hello World');</span><br>
+      <span class="">u.lang = 'en-US';</span><br>
+      <span class="">u.volume = 1.0;</span><br>
+      <span class="">u.rate = 1.0;</span><br>
+      <span class="">speechSynthesis.speak(u);</span><br>
     </p>
 
     <p>
       
     </p>
     <p>
-      <form ng-submit="speak(text, lang)">
+      <form ng-submit="speak(text, lang, volume, rate)">
         <label for="text">Text:</label>
         <textarea type="text" id="text" class="textarea" ng-model="text" placeholder="YOUR TEXT TO SPEECH"></textarea>
 
@@ -196,21 +217,32 @@
           <label for="lang">Lang:</label>
           <input type="text" ng-model="lang" id="lang">
         </p>
-        <button type="submit" >Add to queue</button>
+
+        <p>
+          <label for="volume">Volume: {{volume}}</label>
+          <input type="range" id="volume" class="range" ng-model="volume" min="0" max="1" step="0.1"/>
+        </p>
+
+        <p>
+          <label for="rate">Rate: {{rate}}</label>
+          <input type="range" id="rate" class="range" ng-model="rate" min="0.1" max="10" step="0.1"/>
+        </p>
+
+        <button type="submit" >Speek</button>
       </form>
     </p>
 
     <p>
       <button ng-click="pause()">Pause</button>
       <button ng-click="resume()">Resume</button>
-      <button ng-click="cancel()">Cancel</button>
+      <button ng-click="cancel()">Cancel queue</button>
     </p>
 
   </div>
 
   <footer>
     <p class="text-center">Made with <span class="love">♥</span> by <a href="http://janantala.com">Jan Antala</a></p>
-    <p class="text-center">2013 Licensed under <a href="http://opensource.org/licenses/MIT">MIT</a></p>
+    <p class="text-center">2014 Licensed under <a href="http://opensource.org/licenses/MIT">MIT</a></p>
   </footer>`
 
 </div>
@@ -220,33 +252,26 @@
 
 <script>
 
-var u = new SpeechSynthesisUtterance();
-u.text = 'Hello World! This is a very long, very very long.';
-u.lang = 'en-US';
-u.volume = 0.1; // 0 to 1
-u.rate = 0.5; // 0.1 to 10
-u.pitch = 2; //0 to 2
-u.onend = function(event) { console.log('Finished in ' + event.elapsedTime + ' seconds.'); };
-u.onpause = function(event) { console.log('Paused in ' + event.elapsedTime + ' seconds.'); };
-u.onresume = function(event) { console.log('Resumed in ' + event.elapsedTime + ' seconds.'); };
-speechSynthesis.speak(u);
-speechSynthesis.speak(new SpeechSynthesisUtterance('I am the second one!'));
-speechSynthesis.speak(new SpeechSynthesisUtterance('And I am the last one!'));
-
 
 angular.module('adaptiveApp', []).
 
 controller('AdaptiveCtrl', function ($scope) {
   $scope.text = 'YOUR TEXT TO SPEECH';
   $scope.lang = 'en-US';
+  $scope.volume = 1.0; // 0 to 1
+  $scope.rate = 1.0; // 0.1 to 10
 
-  $scope.speak = function(text, lang){
-    var su = new SpeechSynthesisUtterance(text);
-    su.lang = lang;
-    su.onend = function(event) { console.log('Finished in ' + event.elapsedTime + ' seconds.'); };
-    su.onpause = function(event) { console.log('Paused in ' + event.elapsedTime + ' seconds.'); };
-    su.onresume = function(event) { console.log('Resumed in ' + event.elapsedTime + ' seconds.'); };
-    speechSynthesis.speak(su);
+  $scope.speak = function(text, lang, volume, rate){
+
+    var u = new SpeechSynthesisUtterance(text);
+    u.lang = lang;
+    u.volume = volume;
+    u.rate = rate;
+    u.onend = function(event) { console.log('Finished in ' + event.elapsedTime + ' seconds.'); };
+    u.onpause = function(event) { console.log('Paused in ' + event.elapsedTime + ' seconds.'); };
+    u.onresume = function(event) { console.log('Resumed in ' + event.elapsedTime + ' seconds.'); };
+    speechSynthesis.speak(u);
+
   };
 
   $scope.pause = function(){
