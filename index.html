@@ -188,7 +188,7 @@
       
     </p>
     <p>
-      <form ng-submit="speak(text)">
+      <form ng-submit="speak(text, lang)">
         <label for="text">Text:</label>
         <textarea type="text" id="text" class="textarea" ng-model="text" placeholder="YOUR TEXT TO SPEECH"></textarea>
 
@@ -240,8 +240,13 @@ controller('AdaptiveCtrl', function ($scope) {
   $scope.text = 'YOUR TEXT TO SPEECH';
   $scope.lang = 'en-US';
 
-  $scope.speak = function(text){
-    speechSynthesis.speak(new SpeechSynthesisUtterance(text));
+  $scope.speak = function(text, lang){
+    var su = new SpeechSynthesisUtterance(text);
+    su.lang = lang;
+    su.onend = function(event) { console.log('Finished in ' + event.elapsedTime + ' seconds.'); };
+    su.onpause = function(event) { console.log('Paused in ' + event.elapsedTime + ' seconds.'); };
+    su.onresume = function(event) { console.log('Resumed in ' + event.elapsedTime + ' seconds.'); };
+    speechSynthesis.speak(su);
   };
 
   $scope.pause = function(){

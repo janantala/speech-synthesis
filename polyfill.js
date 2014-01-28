@@ -176,22 +176,39 @@
     };
 
     var cancel = function(){
-      utteranceQueue = [];
-      audio.pause();
+      audio.src = '';
+      audio = undefined;
+      audio = new Audio();
+
       that.pending = false;
       that.speaking = false;
       that.paused = false;
+      utteranceQueue = [];
+      playNext(utteranceQueue);
+
+      console.log(that);
     };
 
     var pause = function(){
       audio.pause();
+      that.speaking = false;
       that.paused = true;
+
+      console.log(that);
     };
 
     var resume = function(){
-      audio.play();
-      that.speaking = true;
+      if (audio.src) {
+        audio.play();
+        that.speaking = true;
+      }
+      else {
+        playNext(utteranceQueue);
+      }
+
       that.paused = false;
+
+      console.log(that);
     };
 
     // Method is not supported
