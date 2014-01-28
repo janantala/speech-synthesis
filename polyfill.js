@@ -1,9 +1,9 @@
-(function(window){
+(function(window, document){
   // 'use strict';
 
   var SpeechSynthesisUtterance = function(text){
     this.text = text || '';
-    this.lang = 'en-US';
+    this.lang = document.documentElement.lang || 'en-US';
     this.voiceURI = '';
     this.volume = 1.0;
     this.rate = 1.0;
@@ -150,7 +150,7 @@
   window.SpeechSynthesisUtterance = window.SpeechSynthesisUtterance || SpeechSynthesisUtterance;
   window.speechSynthesis = window.speechSynthesis || new SpeechSynthesis();
 
-})(window);
+})(window, document);
 
 
 console.log(speechSynthesis);
@@ -172,15 +172,15 @@ speechSynthesis.speak(new SpeechSynthesisUtterance('I am the second one!'));
 speechSynthesis.speak(new SpeechSynthesisUtterance('And I am the last one!'));
 
 
-// window.setTimeout(function(){
-//   speechSynthesis.pause();
+window.setTimeout(function(){
+  speechSynthesis.pause();
 
-//   window.setTimeout(function(){
-//     speechSynthesis.resume();
+  window.setTimeout(function(){
+    speechSynthesis.resume();
 
-//     window.setTimeout(function(){
-//       speechSynthesis.cancel();
+    window.setTimeout(function(){
+      // speechSynthesis.cancel();
       
-//     }, 3000);
-//   }, 3000);
-// }, 3000);
+    }, 3000);
+  }, 3000);
+}, 3000);
