@@ -86,10 +86,11 @@
       }, false);
 
       audio.addEventListener('pause', function() {
-        updateElapsedTime();
-        
-        if (that.onpause) {
-          that.onpause(event);
+        if (!audio.ended) {
+          updateElapsedTime();
+          if (that.onpause) {
+            that.onpause(event);
+          }
         }
       }, false);
 
