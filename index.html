@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>speech-synthesis-polyfill</title>
+  <link href='http://fonts.googleapis.com/css?family=Titillium+Web:200,300' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Droid+Sans+Mono' rel='stylesheet' type='text/css'>
+  <link rel="icon" type="image/png" href="img/logo.png">
+  <style>
+
+    [ng-cloak] { display: none; }
+    html, body { 
+      font-family: 'Titillium Web', sans-serif; 
+      padding: 0;
+      margin: 0;
+      text-align: center;
+    }
+
+    * {
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+    }
+
+    header, footer {
+      background: rgb(229,42,58);
+      padding: 10px 0;
+    }
+
+
+    a {
+      color: white;
+      text-decoration: none;
+    }
+
+    a:hover, a:focus {
+      text-decoration: underline;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .title {
+      color: white;
+      font-weight: 100;
+    }
+
+    .subtitle {
+      padding: 0 10px;
+    }
+
+    .body {
+      margin: 0 auto;
+      width: 960px;
+      min-height: 600px;
+    }
+
+    .ribbon-wrapper {
+      width: 85px;
+      height: 88px;
+      overflow: hidden;
+      position: absolute;
+      top: -3px;
+      right: -3px;
+    }
+
+    .ribbon {
+      font: bold 15px Sans-Serif;
+      color: #333;
+      text-align: center;
+      text-shadow: rgba(255,255,255,0.5) 0px 1px 0px;
+      -webkit-transform: rotate(45deg);
+      -moz-transform:    rotate(45deg);
+      -ms-transform:     rotate(45deg);
+      -o-transform:      rotate(45deg);
+      position: relative;
+      padding: 7px 0;
+      left: -5px;
+      top: 15px;
+      width: 120px;
+      background-color: rgb(229,42,58);
+      color: white;
+    }
+
+    .love {
+      display: inline-block;
+      position: relative;
+      top: .2em;
+      font-size: 1.2em;
+      color: white;
+      -webkit-transform: scale(.9);
+      -moz-transform: scale(.9);
+      transform: scale(.9);
+      -webkit-animation: love .5s infinite linear alternate-reverse;
+      -moz-animation: love .5s infinite linear alternate-reverse;
+      animation: love .5s infinite linear alternate-reverse;
+    }
+
+    @-webkit-keyframes love {
+      to {-webkit-transform: scale(1.2);}
+    }
+    @-moz-keyframes love {
+      to {-moz-transform: scale(1.2);}
+    }
+    @keyframes love {
+      to {transform: scale(1.2);}
+    }
+
+    .code {
+      padding: 2px 10px;
+      background-color: rgb(29,31,33);
+      color: rgb(175,186,183);
+      font-family: 'Droid Sans Mono', 'Titillium Web', sans-serif;
+      font-size: 14px;
+    }
+
+    .code-prompt {
+      font-weight: bold;
+    }
+
+    .code-vial {
+      color: rgb(108,143,167);
+    }
+
+    .code-yellow {
+      color: rgb(230,151,70);
+    }
+
+    .textarea {
+      width: 100%;
+      height: 100px;
+      resize: vertical; 
+      font-family: 'Droid Sans Mono', 'Titillium Web', sans-serif;
+      font-size: 28px;
+      line-height: 40px;
+    }
+
+    .range {
+      width: 100%;
+    }
+
+    </style>
+</head>
+<body class="container" ng-app="adaptiveApp">
+
+  <div ng-controller="AdaptiveCtrl">
+
+  <header>
+    <h1 class="text-center title">speech-synthesis-polyfill</h1>
+    <p class="text-center title"><i>Speech Synthesis polyfill</i></p>
+
+    <a href="https://github.com/janantala/speech-synthesis-polyfill"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png" alt="Fork me on GitHub"></a>
+
+    <p class="code">
+      <span class="code-prompt code-vial">❯</span> bower install <span class="code-yellow">speech-synthesis-polyfill</span>
+    </p>
+
+    <p>
+      <iframe src="http://ghbtns.com/github-btn.html?user=janantala&repo=speech-synthesis-polyfill&type=watch&count=true"
+    allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
+
+      <iframe src="http://ghbtns.com/github-btn.html?user=janantala&repo=speech-synthesis-polyfill&type=fork"
+    allowtransparency="true" frameborder="0" scrolling="0" width="53" height="20"></iframe>
+
+      <iframe src="http://ghbtns.com/github-btn.html?user=janantala&type=follow"
+      allowtransparency="true" frameborder="0" scrolling="0" width="132" height="20"></iframe>
+    </p>
+  </header>
+
+  <div class="body">
+
+    <h3>Load dependecies:</h3>
+
+    <p class="code code-html">
+      <span>&lt;script src="bower_components/speech-synthesis-polyfill/polyfill.min.js"&gt;&lt;/script&gt;</span>
+    </p>
+
+    <h3>Usage:</h3>
+
+    <p class="code code-html">
+      <span class="code-vial">speechSynthesis.speak(SpeechSynthesisUtterance('Hello World'));</span>
+    </p>
+
+    <p>
+      <label for="text">Text:</label>
+    </p>
+    <p>
+      <form ng-submit="speak(text)">
+        <textarea type="text" id="text" class="textarea" ng-model="text" placeholder="YOUR TEXT TO SPEECH"></textarea>
+        <button type="submit" >Speak</button>
+      </form>
+      
+    </p>
+
+  </div>
+
+  <footer>
+    <p class="text-center">Made with <span class="love">♥</span> by <a href="http://janantala.com">Jan Antala</a></p>
+    <p class="text-center">2013 Licensed under <a href="http://opensource.org/licenses/MIT">MIT</a></p>
+  </footer>`
+
+</div>
+
+<!-- <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.3/angular.min.js"></script> -->
+<script src="polyfill.js"></script>
+
+<script>
+// angular.module('adaptiveApp', []).
+
+// controller('AdaptiveCtrl', function ($scope) {
+//   $scope.text = 'YOUR TEXT TO SPEECH';
+
+//   $scope.speak = function(text){
+//     console.log(SpeechSynthesisUtterance);
+//     console.log(speechSynthesis);
+//     speechSynthesis.speak(SpeechSynthesisUtterance('Hello World'));
+
+//     // var u = new SpeechSynthesisUtterance();
+//     // u.text = 'Hello World';
+//     // u.lang = 'en-US';
+//     // u.rate = 1.2;
+//     // u.onend = function(event) { alert('Finished in ' + event.elapsedTime + ' seconds.'); }
+//     // speechSynthesis.speak(u);
+//   };
+// });
+// 
+    console.log(speechSynthesis);
+    console.log(SpeechSynthesisUtterance);
+    
+    // var u = new SpeechSynthesisUtterance('Hello World');
+    // console.log(u);
+    // speechSynthesis.speak(u);
+
+    var u = new SpeechSynthesisUtterance();
+    u.text = 'Hello World';
+    u.lang = 'en-US';
+    u.rate = 1.2;
+    u.onend = function(event) { alert('Finished in ' + event.elapsedTime + ' seconds.'); }
+    speechSynthesis.speak(u);
+    // 
+</script>
+</body>
+</html>
