@@ -1,15 +1,15 @@
 (function(window, document){
-  // 'use strict';
+  'use strict';
 
   var SpeechSynthesisUtterance = function(text){
     this.text = text || '';
     this.lang = document.documentElement.lang || 'en-US';
     this.voiceURI = '';
-    this.volume = 1.0;
-    this.rate = 1.0;
-    this.pitch = 1.0;
+    this.volume = 1.0; // 0 to 1
+    this.rate = 1.0; // 0.1 to 10
+    this.pitch = 1.0; //0 to 2
 
-    var corsProxyServer = 'http://www.corsproxy.com/';
+    this.corsProxyServer = 'http://www.corsproxy.com/';
 
     var that = this;
     this._initAudio = function(){
@@ -27,9 +27,11 @@
         console.log('error');
       }, false);
 
-      var audioURL = [corsProxyServer, 'translate.google.com/translate_tts?ie=UTF-8&q=', that.text , '&tl=', that.lang].join('');
+      var audioURL = [that.corsProxyServer, 'translate.google.com/translate_tts?ie=UTF-8&q=', that.text , '&tl=', that.lang].join('');
 
       audio.src = audioURL;
+      audio.volume = that.volume;
+      audio.playbackRate = that.rate;
       console.log(audioURL);
 
       return audio;
@@ -163,24 +165,11 @@ console.log(SpeechSynthesisUtterance);
 var u = new SpeechSynthesisUtterance();
 u.text = 'Hello World! This is a very long, very very long.';
 u.lang = 'en-US';
-u.volume = 0.5; // 0 to 1
-u.rate = 1.5; // 0.1 to 10
+u.volume = 0.1; // 0 to 1
+u.rate = 0.5; // 0.1 to 10
 u.pitch = 2; //0 to 2
 u.onend = function(event) { alert('Finished in ' + event.elapsedTime + ' seconds.'); };
 speechSynthesis.speak(u);
 speechSynthesis.speak(new SpeechSynthesisUtterance('I am the second one!'));
 speechSynthesis.speak(new SpeechSynthesisUtterance('And I am the last one!'));
 
-
-window.setTimeout(function(){
-  speechSynthesis.pause();
-
-  window.setTimeout(function(){
-    speechSynthesis.resume();
-
-    window.setTimeout(function(){
-      // speechSynthesis.cancel();
-      
-    }, 3000);
-  }, 3000);
-}, 3000);
