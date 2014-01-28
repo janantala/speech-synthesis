@@ -6,6 +6,7 @@
     /**
      * SpeechSynthesisUtterance Attributes
      */
+    
     this.text = text || '';
     this.lang = document.documentElement.lang || 'en-US';
     this.volume = 1.0; // 0 to 1
@@ -17,6 +18,7 @@
     /**
      * SpeechSynthesisUtterance Events
      */
+    
     this.onstart = undefined;
     this.onend = undefined;
     this.onerror = undefined;
@@ -32,6 +34,7 @@
     /**
      * Private parts
      */
+    
     var that = this;
 
     var startTime;
@@ -51,7 +54,6 @@
       var audio = new Audio();
 
       audio.addEventListener('play', function() {
-        console.log('play');
         updateElapsedTime();
 
         if (! startTime) {
@@ -68,7 +70,6 @@
       }, false);
 
       audio.addEventListener('ended', function() {
-        console.log('ended');
         updateElapsedTime();
         
         if (that.onend) {
@@ -77,7 +78,6 @@
       }, false);
 
       audio.addEventListener('error', function() {
-        console.log('error');
         updateElapsedTime();
         
         if (that.onerror) {
@@ -86,7 +86,6 @@
       }, false);
 
       audio.addEventListener('pause', function() {
-        console.log('pause');
         updateElapsedTime();
         
         if (that.onpause) {
@@ -99,7 +98,6 @@
       audio.src = audioURL;
       audio.volume = that.volume;
       audio.playbackRate = that.rate;
-      console.log(audioURL);
 
       return audio;
     };
@@ -108,19 +106,27 @@
   };
 
   var SpeechSynthesis = function(){
-    var utteranceQueue = [];
+
+    /**
+     * SpeechSynthesis Attributes
+     */
 
     this.pending = false;
     this.speaking = false;
     this.paused = false;
 
+    /**
+     * Private parts
+     */
+
     var that = this;
     var audio = new Audio();
+    var utteranceQueue = [];
 
     var playNext = function(utteranceQueue){
-      console.log(utteranceQueue);
       var SpeechSynthesisUtterance = utteranceQueue.shift();
 
+      that.speaking = false;
       if (utteranceQueue.length) {
         that.pending = true;
       }
@@ -138,21 +144,21 @@
     var attachAudioEvents = function(audio) {
 
       audio.addEventListener('play', function() {
-        console.log('SpeechSynthesis audio play');
+        // console.log('SpeechSynthesis audio play');
       }, false);
 
       audio.addEventListener('ended', function() {
-        console.log('SpeechSynthesis audio ended');
+        // console.log('SpeechSynthesis audio ended');
         playNext(utteranceQueue);
       }, false);
 
       audio.addEventListener('error', function() {
-        console.log('SpeechSynthesis audio error');
+        // console.log('SpeechSynthesis audio error');
         playNext(utteranceQueue);
       }, false);
 
       audio.addEventListener('pause', function() {
-        console.log('SpeechSynthesis audio pause');
+        // console.log('SpeechSynthesis audio pause');
       }, false);
     };
 
@@ -161,7 +167,6 @@
       that.pending = true;
       utteranceQueue.push(SpeechSynthesisUtterance);
 
-      
       if (that.speaking || that.paused) {
         // do nothing else
       }
@@ -176,25 +181,27 @@
       that.pending = false;
       that.speaking = false;
       that.paused = false;
-      console.log(that);
     };
 
     var pause = function(){
       audio.pause();
       that.paused = true;
-      console.log(that);
     };
 
     var resume = function(){
       audio.play();
       that.speaking = true;
       that.paused = false;
-      console.log(that);
     };
 
+    // Method is not supported
     var getVoices = function(){
       return [];
     };
+
+    /**
+     * SpeechSynthesis Methods
+     */
 
     return {
       'speak': function(SpeechSynthesisUtterance){
@@ -219,36 +226,8 @@
 
     };
   };
+
   window.SpeechSynthesisUtterance = window.SpeechSynthesisUtterance || SpeechSynthesisUtterance;
   window.speechSynthesis = window.speechSynthesis || new SpeechSynthesis();
 
 })(window, document);
-
-
-console.log(speechSynthesis);
-console.log(SpeechSynthesisUtterance);
-
-// var u = new SpeechSynthesisUtterance('Hello World');
-// console.log(u);
-// speechSynthesis.speak(u);
-
-var u = new SpeechSynthesisUtterance();
-u.text = 'Hello World! This is a very long, very very long.';
-u.lang = 'en-US';
-u.volume = 0.1; // 0 to 1
-u.rate = 0.5; // 0.1 to 10
-u.pitch = 2; //0 to 2
-u.onend = function(event) { console.log('Finished in ' + event.elapsedTime + ' seconds.'); };
-u.onpause = function(event) { console.log('Paused in ' + event.elapsedTime + ' seconds.'); };
-u.onresume = function(event) { console.log('Resumed in ' + event.elapsedTime + ' seconds.'); };
-speechSynthesis.speak(u);
-speechSynthesis.speak(new SpeechSynthesisUtterance('I am the second one!'));
-speechSynthesis.speak(new SpeechSynthesisUtterance('And I am the last one!'));
-
-window.setTimeout(function(){
-  speechSynthesis.pause();
-  window.setTimeout(function(){
-    speechSynthesis.resume();
-  }, 3000);
-}, 3000);
-
