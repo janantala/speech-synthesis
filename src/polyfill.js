@@ -243,8 +243,14 @@
     };
   };
 
-  window.SpeechSynthesisUtterance = window.SpeechSynthesisUtterance || SpeechSynthesisUtterance;
-  window.speechSynthesis = window.speechSynthesis || new SpeechSynthesis();
+  try {
+    window.SpeechSynthesisUtterance = window.SpeechSynthesisUtterance || SpeechSynthesisUtterance;
+    window.speechSynthesis = window.speechSynthesis || new SpeechSynthesis();
+  }
+  catch(e) {
+    window.SpeechSynthesisUtterancePolyfill = window.SpeechSynthesisUtterance || SpeechSynthesisUtterance;
+    window.speechSynthesisPolyfill = window.speechSynthesis || new SpeechSynthesis();
+  }
 
 })(window, document);
 

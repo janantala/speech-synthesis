@@ -247,10 +247,10 @@
 
 </div>
 
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.3/angular.min.js"></script>
-<script src="src/polyfill.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular.min.js"></script>
+<script type="text/javascript" src="src/polyfill.js"></script>
 
-<script>
+<script type="text/javascript">
 
 
 angular.module('adaptiveApp', []).
@@ -263,27 +263,31 @@ controller('AdaptiveCtrl', function ($scope) {
 
   $scope.speak = function(text, lang, volume, rate){
 
-    var u = new SpeechSynthesisUtterance(text);
+    var u = new SpeechSynthesisUtterance(text) || new SpeechSynthesisUtterancePolyfill(text);
     u.lang = lang;
     u.volume = volume;
     u.rate = rate;
     u.onend = function(event) { console.log('Finished in ' + event.elapsedTime + ' seconds.'); };
     u.onpause = function(event) { console.log('Paused in ' + event.elapsedTime + ' seconds.'); };
     u.onresume = function(event) { console.log('Resumed in ' + event.elapsedTime + ' seconds.'); };
-    speechSynthesis.speak(u);
+    var ss = speechSynthesis || speechSynthesisPolyfill;
+    ss.speak(u);
 
   };
 
   $scope.pause = function(){
-    speechSynthesis.pause();
+    var ss = speechSynthesis || speechSynthesisPolyfill;
+    ss.pause();
   };
 
   $scope.resume = function(){
-    speechSynthesis.resume();
+    var ss = speechSynthesis || speechSynthesisPolyfill;
+    ss.resume();
   };
 
   $scope.cancel = function(){
-    speechSynthesis.cancel();
+    var ss = speechSynthesis || speechSynthesisPolyfill;
+    ss.cancel();
   };
 });
 
