@@ -1,0 +1,15 @@
+{
+  "strict": true,
+  "undef": true,
+  "unused": true,
+  "node": true,
+  "globals": {
+    "window": true,
+    "document": true,
+    "Audio": true,
+    "describe": true,
+    "it": true,
+    "beforeEach": true,
+    "afterEach": true
+  }
+}

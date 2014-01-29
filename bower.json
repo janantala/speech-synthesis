@@ -1,0 +1,27 @@
+{
+  "name": "speech-synthesis",
+  "version": "0.1.0",
+  "description": "Speech Synthesis polyfill",
+  "keywords": ["speech", "synthesis", "polyfill"],
+  "authors": ["Jan Antala <hello@janantala.com>"],
+  "license": "MIT",
+  "homepage": "https://github.com/janantala/speech-synthesis",
+  "main": "./src/polyfill.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/janantala/speech-synthesis.git"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test*",
+    "index.html",
+    "gulpfile.js",
+    "package.json"
+  ],
+  "dependencies": {
+  },
+  "devDependencies": {
+  }
+}
