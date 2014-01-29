@@ -216,6 +216,10 @@
      */
 
     return {
+      'pending': that.pending,
+      'speaking': that.speaking,
+      'paused': that.paused,
+
       'speak': function(SpeechSynthesisUtterance){
         speak(SpeechSynthesisUtterance);
       },
