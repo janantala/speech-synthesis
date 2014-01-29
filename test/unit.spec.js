@@ -66,6 +66,11 @@ describe('unit specs', function() {
       expect(u.pitch).toBe(1.0);
       expect(u.voiceURI).toBe('native');
     });
+
+    it('should have a CORS proxy server', function() {
+      var u = new SpeechSynthesisUtterance('Hello there!');
+      expect(u.corsProxyServer).toBe('http://www.corsproxy.com/');
+    });  
   });
   
 });
