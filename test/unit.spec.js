@@ -12,9 +12,6 @@ describe('unit specs', function() {
     });
 
     it('should have attributes', function(){
-      console.log(speechSynthesis);
-      console.log(speechSynthesis.pending);
-
       expect(speechSynthesis.pending).toBeDefined();
       expect(speechSynthesis.speaking).toBeDefined();
       expect(speechSynthesis.paused).toBeDefined();
