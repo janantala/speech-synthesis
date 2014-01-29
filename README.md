@@ -1,4 +1,4 @@
-# speech-synthesis v0.1.0 [![Build Status](https://travis-ci.org/janantala/speech-synthesis.png?branch=master)](https://travis-ci.org/janantala/speech-synthesis)
+# speech-synthesis v0.1.1 [![Build Status](https://travis-ci.org/janantala/speech-synthesis.png?branch=master)](https://travis-ci.org/janantala/speech-synthesis)
 
 Speech Synthesis polyfill based on Google Translate service. Polyfill downloads audio from Google Translate server using [CORS](http://caniuse.com/#feat=cors) and plays it using [audio](http://caniuse.com/#feat=audio) element.
 
@@ -43,6 +43,8 @@ u.rate = 1.0;
 u.onend = function(event) { console.log('Finished in ' + event.elapsedTime + ' seconds.'); };
 speechSynthesis.speak(u);
 ```
+
+*Note: in Firefox you have to use `SpeechSynthesisUtterancePolyfill` and `speechSynthesisPolyfill`*
 
 ### CORS proxy server
 CORS proxy server is required to download audio from google translate service into your web application. Default value is set to `http://www.corsproxy.com/` but we would recommend you to use your own server. To set up your own change `corsProxyServer` attribute in `SpeechSynthesisUtterance` instance.
