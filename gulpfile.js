@@ -34,11 +34,18 @@ gulp.task('lint', function(){
 });
 
 gulp.task('karma', function () {
+
+  var options = {
+    configFile: 'karma.conf.js',
+    action: 'run'
+  };
+
+  if (process.env.TRAVIS) {
+    options.browsers = ['Firefox'];
+  }
+    
   return gulp.src(testFiles)
-    .pipe(karma({
-      configFile: 'karma.conf.js',
-      action: 'run'
-    }));
+    .pipe(karma(options));
 });
 
 gulp.task('build', function() {
