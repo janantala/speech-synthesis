@@ -36,15 +36,17 @@ This will copy the files into your `bower_components` folder, along with its dep
 And finally use speech synthesis:
 
 ```js
-var u = new SpeechSynthesisUtterance('Hello World');
+// Initialize polyfill
+var fallbackSpeechSynthesis = window.speechSynthesis || window.speechSynthesisPolyfill;
+var fallbackSpeechSynthesisUtterance = window.SpeechSynthesisUtterance || window.SpeechSynthesisUtterancePolyfill;
+
+var u = new fallbackSpeechSynthesisUtterance('Hello World');
 u.lang = 'en-US';
 u.volume = 1.0;
 u.rate = 1.0;
 u.onend = function(event) { console.log('Finished in ' + event.elapsedTime + ' seconds.'); };
-speechSynthesis.speak(u);
+fallbackSpeechSynthesis.speak(u);
 ```
-
-*Note: in Firefox you have to use `SpeechSynthesisUtterancePolyfill` and `speechSynthesisPolyfill`*
 
 ### CORS proxy server
 CORS proxy server is required to download audio from google translate service into your web application. Default value is set to `http://www.corsproxy.com/` but we would recommend you to use your own server. To set up your own change `corsProxyServer` attribute in `SpeechSynthesisUtterance` instance.
@@ -104,7 +106,7 @@ u.corsProxyServer = 'http://www.corsproxy.com/';
 
 # Contributing
 
-Contributions are welcome. Please make a pull request against and do not bump versions. Also include tests.
+Contributions are welcome. Please make a pull request and do not bump versions. Also include tests.
 
 # License
 
