@@ -2,52 +2,55 @@
 
 describe('unit specs', function() {
 
-  describe('speechSynthesis', function() {
+  var speechSynthesisPolyfill = window.speechSynthesisPolyfill;
+  var SpeechSynthesisUtterancePolyfill = window.SpeechSynthesisUtterancePolyfill;
+
+  describe('speechSynthesisPolyfill', function() {
     it('should be defined', function() {
-      expect(speechSynthesis).toBeDefined();
+      expect(speechSynthesisPolyfill).toBeDefined();
     });
 
     it('should be object', function() {
-      expect(typeof speechSynthesis).toBe('object');
+      expect(typeof speechSynthesisPolyfill).toBe('object');
     });
 
     it('should have attributes', function(){
-      expect(speechSynthesis.pending).toBeDefined();
-      expect(speechSynthesis.speaking).toBeDefined();
-      expect(speechSynthesis.paused).toBeDefined();
+      expect(speechSynthesisPolyfill.pending).toBeDefined();
+      expect(speechSynthesisPolyfill.speaking).toBeDefined();
+      expect(speechSynthesisPolyfill.paused).toBeDefined();
 
-      expect(speechSynthesis.pending).toBe(false);
-      expect(speechSynthesis.speaking).toBe(false);
-      expect(speechSynthesis.paused).toBe(false);
+      expect(speechSynthesisPolyfill.pending).toBe(false);
+      expect(speechSynthesisPolyfill.speaking).toBe(false);
+      expect(speechSynthesisPolyfill.paused).toBe(false);
     });
 
     it('should have methods', function(){
-      expect(speechSynthesis.speak).toBeDefined();
-      expect(speechSynthesis.cancel).toBeDefined();
-      expect(speechSynthesis.pause).toBeDefined();
-      expect(speechSynthesis.resume).toBeDefined();
-      expect(speechSynthesis.getVoices).toBeDefined();
+      expect(speechSynthesisPolyfill.speak).toBeDefined();
+      expect(speechSynthesisPolyfill.cancel).toBeDefined();
+      expect(speechSynthesisPolyfill.pause).toBeDefined();
+      expect(speechSynthesisPolyfill.resume).toBeDefined();
+      expect(speechSynthesisPolyfill.getVoices).toBeDefined();
 
-      expect(typeof speechSynthesis.speak).toBe('function');
-      expect(typeof speechSynthesis.cancel).toBe('function');
-      expect(typeof speechSynthesis.pause).toBe('function');
-      expect(typeof speechSynthesis.resume).toBe('function');
-      expect(typeof speechSynthesis.getVoices).toBe('function');
+      expect(typeof speechSynthesisPolyfill.speak).toBe('function');
+      expect(typeof speechSynthesisPolyfill.cancel).toBe('function');
+      expect(typeof speechSynthesisPolyfill.pause).toBe('function');
+      expect(typeof speechSynthesisPolyfill.resume).toBe('function');
+      expect(typeof speechSynthesisPolyfill.getVoices).toBe('function');
     });
 
   });
 
-  describe('SpeechSynthesisUtterance', function() {
+  describe('SpeechSynthesisUtterancePolyfill', function() {
     it('should be defined', function() {
-      expect(SpeechSynthesisUtterance).toBeDefined();
+      expect(SpeechSynthesisUtterancePolyfill).toBeDefined();
     });
 
     it('should be function', function() {
-      expect(typeof SpeechSynthesisUtterance).toBe('function');
+      expect(typeof SpeechSynthesisUtterancePolyfill).toBe('function');
     });
 
     it('should have attributes', function() {
-      var u = new SpeechSynthesisUtterance('Hello there!');
+      var u = new SpeechSynthesisUtterancePolyfill('Hello there!');
 
       expect(u.text).toBeDefined();
       expect(u.lang).toBeDefined();
@@ -65,7 +68,7 @@ describe('unit specs', function() {
     });
 
     it('should have a CORS proxy server', function() {
-      var u = new SpeechSynthesisUtterance('Hello there!');
+      var u = new SpeechSynthesisUtterancePolyfill('Hello there!');
       expect(u.corsProxyServer).toBe('http://www.corsproxy.com/');
     });  
   });

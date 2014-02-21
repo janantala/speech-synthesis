@@ -1,7 +1,7 @@
 (function(window, document){
   'use strict';
 
-  var SpeechSynthesisUtterance = function(text){
+  var SpeechSynthesisUtterancePolyfill = function(text){
 
     /**
      * SpeechSynthesisUtterance Attributes
@@ -106,7 +106,7 @@
     return this;
   };
 
-  var SpeechSynthesis = function(){
+  var speechSynthesisPolyfill = function(){
 
     /**
      * SpeechSynthesis Attributes
@@ -125,7 +125,7 @@
     var utteranceQueue = [];
 
     var playNext = function(utteranceQueue){
-      var SpeechSynthesisUtterance = utteranceQueue.shift();
+      var SpeechSynthesisUtterancePolyfill = utteranceQueue.shift();
 
       that.speaking = false;
       if (utteranceQueue.length) {
@@ -135,8 +135,8 @@
         that.pending = false;
       }
 
-      if (SpeechSynthesisUtterance) {
-        audio = SpeechSynthesisUtterance._initAudio();
+      if (SpeechSynthesisUtterancePolyfill) {
+        audio = SpeechSynthesisUtterancePolyfill._initAudio();
         attachAudioEvents(audio);
         resume();
       }
@@ -163,10 +163,10 @@
       }, false);
     };
 
-    var speak = function(SpeechSynthesisUtterance){
+    var speak = function(SpeechSynthesisUtterancePolyfill){
 
       that.pending = true;
-      utteranceQueue.push(SpeechSynthesisUtterance);
+      utteranceQueue.push(SpeechSynthesisUtterancePolyfill);
 
       if (that.speaking || that.paused) {
         // do nothing else
@@ -220,8 +220,8 @@
       'speaking': that.speaking,
       'paused': that.paused,
 
-      'speak': function(SpeechSynthesisUtterance){
-        speak(SpeechSynthesisUtterance);
+      'speak': function(SpeechSynthesisUtterancePolyfill){
+        speak(SpeechSynthesisUtterancePolyfill);
       },
 
       'cancel': function(){
@@ -243,14 +243,8 @@
     };
   };
 
-  try {
-    window.SpeechSynthesisUtterance = window.SpeechSynthesisUtterance || SpeechSynthesisUtterance;
-    window.speechSynthesis = window.speechSynthesis || new SpeechSynthesis();
-  }
-  catch(e) {
-    window.SpeechSynthesisUtterancePolyfill = window.SpeechSynthesisUtterance || SpeechSynthesisUtterance;
-    window.speechSynthesisPolyfill = window.speechSynthesis || new SpeechSynthesis();
-  }
+  window.SpeechSynthesisUtterancePolyfill = SpeechSynthesisUtterancePolyfill;
+  window.speechSynthesisPolyfill = new speechSynthesisPolyfill();
 
 })(window, document);
 
