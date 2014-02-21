@@ -70,7 +70,7 @@
     .body {
       margin: 0 auto;
       width: 100%;
-      max-width: 600px;
+      max-width: 1000px;
       min-height: 600px;
       padding: 10px;
     }
@@ -198,11 +198,17 @@
     <h3>Usage:</h3>
 
     <p class="code code-html text-left">
-      <span class="">var u = new SpeechSynthesisUtterance('Hello World');</span><br>
+      <span class="code-yellow">// Initialize polyfill</span><br>
+      <span class="">var fallbackSpeechSynthesis = window.speechSynthesis || window.speechSynthesisPolyfill;</span><br>
+      <span class="">var fallbackSpeechSynthesisUtterance = window.SpeechSynthesisUtterance || window.SpeechSynthesisUtterancePolyfill;</span><br>
+      <br>
+
+      <span class="">var u = new fallbackSpeechSynthesisUtterance('Hello World');</span><br>
       <span class="">u.lang = 'en-US';</span><br>
       <span class="">u.volume = 1.0;</span><br>
       <span class="">u.rate = 1.0;</span><br>
-      <span class="">speechSynthesis.speak(u);</span><br>
+      <span class="">u.onend = function(event) { console.log('Finished in ' + event.elapsedTime + ' seconds.'); };</span><br>
+      <span class="">fallbackSpeechSynthesis.speak(u);</span><br>
     </p>
 
     <p>
@@ -252,6 +258,9 @@
 
 <script type="text/javascript">
 
+// Initialize polyfill
+var fallbackSpeechSynthesis = window.speechSynthesis || window.speechSynthesisPolyfill;
+var fallbackSpeechSynthesisUtterance = window.SpeechSynthesisUtterance || window.SpeechSynthesisUtterancePolyfill;
 
 angular.module('adaptiveApp', []).
 
@@ -263,31 +272,27 @@ controller('AdaptiveCtrl', function ($scope) {
 
   $scope.speak = function(text, lang, volume, rate){
 
-    var u = new SpeechSynthesisUtterance(text) || new SpeechSynthesisUtterancePolyfill(text);
+    var u = new fallbackSpeechSynthesisUtterance(text);
     u.lang = lang;
     u.volume = volume;
     u.rate = rate;
     u.onend = function(event) { console.log('Finished in ' + event.elapsedTime + ' seconds.'); };
     u.onpause = function(event) { console.log('Paused in ' + event.elapsedTime + ' seconds.'); };
     u.onresume = function(event) { console.log('Resumed in ' + event.elapsedTime + ' seconds.'); };
-    var ss = speechSynthesis || speechSynthesisPolyfill;
-    ss.speak(u);
+    fallbackSpeechSynthesis.speak(u);
 
   };
 
   $scope.pause = function(){
-    var ss = speechSynthesis || speechSynthesisPolyfill;
-    ss.pause();
+    fallbackSpeechSynthesis.pause();
   };
 
   $scope.resume = function(){
-    var ss = speechSynthesis || speechSynthesisPolyfill;
-    ss.resume();
+    fallbackSpeechSynthesis.resume();
   };
 
   $scope.cancel = function(){
-    var ss = speechSynthesis || speechSynthesisPolyfill;
-    ss.cancel();
+    fallbackSpeechSynthesis.cancel();
   };
 });
 
