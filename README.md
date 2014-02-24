@@ -55,6 +55,17 @@ CORS proxy server is required to download audio from google translate service in
 u.corsProxyServer = 'http://www.corsproxy.com/';
 ```
 
+
+### Identify the polyfill usage
+To identify the pollyfill usage you can use `isPolyfill` attributes.
+
+```js
+var u = new window.SpeechSynthesisUtterancePolyfill('Hello World');
+u.isPolyfill; // true
+
+window.speechSynthesisPolyfill.isPolyfill; // true
+```
+
 # Supported attributes and methods
 
 ### SpeechSynthesis Attributes
