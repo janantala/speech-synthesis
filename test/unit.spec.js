@@ -38,6 +38,11 @@ describe('unit specs', function() {
       expect(typeof speechSynthesisPolyfill.getVoices).toBe('function');
     });
 
+    it('should identify the polyfill', function(){
+      expect(speechSynthesisPolyfill.isPolyfill).toBeDefined();
+      expect(speechSynthesisPolyfill.isPolyfill).toBe(true);
+    });
+
   });
 
   describe('SpeechSynthesisUtterancePolyfill', function() {
@@ -70,7 +75,12 @@ describe('unit specs', function() {
     it('should have a CORS proxy server', function() {
       var u = new SpeechSynthesisUtterancePolyfill('Hello there!');
       expect(u.corsProxyServer).toBe('http://www.corsproxy.com/');
-    });  
+    });
+
+    it('should identify the polyfill', function(){
+      var u = new SpeechSynthesisUtterancePolyfill('Hello there!');
+      expect(u.isPolyfill).toBe(true);
+    }); 
   });
   
 });
