@@ -4,6 +4,12 @@
   var SpeechSynthesisUtterancePolyfill = function(text){
 
     /**
+     * Identify the polyfill usage
+     */
+
+    this.isPolyfill = true;
+
+    /**
      * SpeechSynthesisUtterance Attributes
      */
     
@@ -109,6 +115,12 @@
   var speechSynthesisPolyfill = function(){
 
     /**
+     * Identify the polyfill usage
+     */
+
+    this.isPolyfill = true;
+
+    /**
      * SpeechSynthesis Attributes
      */
 
@@ -211,11 +223,17 @@
       return [];
     };
 
-    /**
-     * SpeechSynthesis Methods
-     */
-
     return {
+      /**
+       * Identify the polyfill usage
+       */
+
+      'isPolyfill': true,
+
+      /**
+       * SpeechSynthesis Methods
+       */
+
       'pending': that.pending,
       'speaking': that.speaking,
       'paused': that.paused,
