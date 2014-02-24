@@ -112,7 +112,7 @@
     return this;
   };
 
-  var speechSynthesisPolyfill = function(){
+  var SpeechSynthesisPolyfill = function(){
 
     /**
      * Identify the polyfill usage
@@ -262,7 +262,7 @@
   };
 
   window.SpeechSynthesisUtterancePolyfill = SpeechSynthesisUtterancePolyfill;
-  window.speechSynthesisPolyfill = new speechSynthesisPolyfill();
+  window.speechSynthesisPolyfill = new SpeechSynthesisPolyfill();
 
 })(window, document);
 
