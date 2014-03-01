@@ -62,7 +62,7 @@
 
     this._initAudio = function(){
       var sentences = [];
-      var ended = false;
+      that._ended = false;
       var audio = new Audio();
 
       audio.addEventListener('play', function() {
@@ -90,7 +90,7 @@
         }
         else {
           updateElapsedTime();
-          ended = true;
+          that._ended = true;
           if (that.onend) {
             that.onend(event);
           }
@@ -100,14 +100,14 @@
 
       audio.addEventListener('error', function() {
         updateElapsedTime();
-        
+        that._ended = true;
         if (that.onerror) {
           that.onerror(event);
         }
       }, false);
 
       audio.addEventListener('pause', function() {
-        if (!ended) {
+        if (!that._ended) {
           updateElapsedTime();
           if (that.onpause) {
             that.onpause(event);
@@ -191,12 +191,12 @@
 
       if (SpeechSynthesisUtterancePolyfill) {
         audio = SpeechSynthesisUtterancePolyfill._initAudio();
-        attachAudioEvents(audio);
+        attachAudioEvents(audio, SpeechSynthesisUtterancePolyfill);
         resume();
       }
     };
 
-    var attachAudioEvents = function(audio) {
+    var attachAudioEvents = function(audio, SpeechSynthesisUtterancePolyfill) {
 
       audio.addEventListener('play', function() {
         // console.log('SpeechSynthesis audio play');
@@ -204,7 +204,9 @@
 
       audio.addEventListener('ended', function() {
         // console.log('SpeechSynthesis audio ended');
-        playNext(utteranceQueue);
+        if (SpeechSynthesisUtterancePolyfill._ended) {
+          playNext(utteranceQueue);
+        }
       }, false);
 
       audio.addEventListener('error', function() {
