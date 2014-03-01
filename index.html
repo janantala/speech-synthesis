@@ -259,8 +259,10 @@
 <script type="text/javascript">
 
 // Initialize polyfill
-var fallbackSpeechSynthesis = window.speechSynthesis || window.speechSynthesisPolyfill;
-var fallbackSpeechSynthesisUtterance = window.SpeechSynthesisUtterance || window.SpeechSynthesisUtterancePolyfill;
+// var fallbackSpeechSynthesis = window.speechSynthesis || window.speechSynthesisPolyfill;
+var fallbackSpeechSynthesis = window.speechSynthesisPolyfill;
+// var fallbackSpeechSynthesisUtterance = window.SpeechSynthesisUtterance || window.SpeechSynthesisUtterancePolyfill;
+var fallbackSpeechSynthesisUtterance = window.SpeechSynthesisUtterancePolyfill;
 
 angular.module('adaptiveApp', []).
 
