@@ -130,7 +130,9 @@
             text += word;
           }
           else {
-            sentences.push(text);
+            if (text.length > 0) {
+              sentences.push(text);
+            }
             text = word;
           }
         }
