@@ -56,7 +56,13 @@
       event.elapsedTime = (endTime - (startTime || endTime)) / 1000;
     };
 
+    var getAudioUrl = function(corsProxyServer, text, lang){
+      return [corsProxyServer, 'translate.google.com/translate_tts?ie=UTF-8&q=', text , '&tl=', lang].join('');
+    };
+
     this._initAudio = function(){
+      var sentences = [];
+      that._ended = false;
       var audio = new Audio();
 
       audio.addEventListener('play', function() {
@@ -76,23 +82,32 @@
       }, false);
 
       audio.addEventListener('ended', function() {
-        updateElapsedTime();
-        
-        if (that.onend) {
-          that.onend(event);
+
+        if (sentences.length) {
+          var audioURL = getAudioUrl(that.corsProxyServer, sentences.shift(), that.lang);
+          audio.src = audioURL;
+          audio.play();
         }
+        else {
+          updateElapsedTime();
+          that._ended = true;
+          if (that.onend) {
+            that.onend(event);
+          }
+        }
+        
       }, false);
 
       audio.addEventListener('error', function() {
         updateElapsedTime();
-        
+        that._ended = true;
         if (that.onerror) {
           that.onerror(event);
         }
       }, false);
 
       audio.addEventListener('pause', function() {
-        if (!audio.ended) {
+        if (!that._ended) {
           updateElapsedTime();
           if (that.onpause) {
             that.onpause(event);
@@ -100,8 +115,37 @@
         }
       }, false);
 
-      var audioURL = [that.corsProxyServer, 'translate.google.com/translate_tts?ie=UTF-8&q=', that.text , '&tl=', that.lang].join('');
+      // Google Translate limit is 100 characters, we need to split longer text
+      var LIMIT = 100;
 
+      if (that.text.length > LIMIT) {
+
+        var text = '';
+        var words = that.text.split(' ');
+
+        for (var w = 0; w < words.length; w++) {
+          var word = words[w];
+          if (text.length + word.length + 1 < LIMIT) {
+            text = text.length ? text + ' ' : text;
+            text += word;
+          }
+          else {
+            if (text.length > 0) {
+              sentences.push(text);
+            }
+            text = word;
+          }
+        }
+
+        if (text) {
+          sentences.push(text);
+        }
+      }
+      else {
+        sentences.push(that.text);
+      }
+
+      var audioURL = getAudioUrl(that.corsProxyServer, sentences.shift(), that.lang);
       audio.src = audioURL;
       audio.volume = that.volume;
       audio.playbackRate = that.rate;
@@ -149,12 +193,12 @@
 
       if (SpeechSynthesisUtterancePolyfill) {
         audio = SpeechSynthesisUtterancePolyfill._initAudio();
-        attachAudioEvents(audio);
+        attachAudioEvents(audio, SpeechSynthesisUtterancePolyfill);
         resume();
       }
     };
 
-    var attachAudioEvents = function(audio) {
+    var attachAudioEvents = function(audio, SpeechSynthesisUtterancePolyfill) {
 
       audio.addEventListener('play', function() {
         // console.log('SpeechSynthesis audio play');
@@ -162,7 +206,9 @@
 
       audio.addEventListener('ended', function() {
         // console.log('SpeechSynthesis audio ended');
-        playNext(utteranceQueue);
+        if (SpeechSynthesisUtterancePolyfill._ended) {
+          playNext(utteranceQueue);
+        }
       }, false);
 
       audio.addEventListener('error', function() {
