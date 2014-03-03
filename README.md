@@ -1,4 +1,4 @@
-# speech-synthesis v0.3.0 [![Build Status](https://travis-ci.org/janantala/speech-synthesis.png?branch=master)](https://travis-ci.org/janantala/speech-synthesis)
+# speech-synthesis v0.3.1 [![Build Status](https://travis-ci.org/janantala/speech-synthesis.png?branch=master)](https://travis-ci.org/janantala/speech-synthesis)
 
 Speech Synthesis polyfill based on Google Translate service. Polyfill downloads audio from Google Translate server using [CORS](http://caniuse.com/#feat=cors) and plays it using [audio](http://caniuse.com/#feat=audio) element.
 

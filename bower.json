@@ -1,6 +1,6 @@
 {
   "name": "speech-synthesis",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Speech Synthesis polyfill",
   "keywords": ["speech", "synthesis", "polyfill"],
   "authors": ["Jan Antala <hello@janantala.com>"],
