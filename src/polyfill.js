@@ -57,7 +57,7 @@
     };
 
     var getAudioUrl = function(corsProxyServer, text, lang){
-      return [corsProxyServer, 'translate.google.com/translate_tts?ie=UTF-8&q=', text , '&tl=', lang].join('');
+      return [corsProxyServer, 'translate.google.com/translate_tts?ie=UTF-8&q=', encodeURIComponent(text) , '&tl=', lang].join('');
     };
 
     this._initAudio = function(){
