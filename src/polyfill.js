@@ -116,8 +116,9 @@
       }, false);
 
       // Google Translate limit is 100 characters, we need to split longer text
-      var LIMIT = 100;
+      // we use the space delimeter
 
+      var LIMIT = 100;
       if (that.text.length > LIMIT) {
 
         var text = '';
@@ -125,19 +126,37 @@
 
         for (var w = 0; w < words.length; w++) {
           var word = words[w];
+
+          // if the text + word are no longer than 100 characters
           if (text.length + word.length + 1 < LIMIT) {
             text = text.length ? text + ' ' : text;
             text += word;
           }
           else {
+            // we push the text into sentences
             if (text.length > 0) {
               sentences.push(text);
+              text = word;
             }
-            text = word;
+
+            // if the word is still long we need to split it again
+            // now we use hard character count delimeter
+            // and push its parts into sentences
+            if (word.length > LIMIT) {
+              var regexp = new RegExp('.{1,' + LIMIT + '}', 'g'); // /.{1,100}/g
+              var parts = word.match(regexp);
+              while (parts.length > 0) {
+                sentences.push(parts.shift());
+              }
+
+              text = '';
+            }
+            
           }
         }
 
-        if (text) {
+        // if we have remaining text we push it into senteces
+        if (text.length > 0) {
           sentences.push(text);
         }
       }
