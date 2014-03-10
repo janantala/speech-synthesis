@@ -1,6 +1,68 @@
 (function(window, document){
   'use strict';
 
+  var splitText = function(text, delimeters, limit){
+    var sentences = [];
+
+    // split text by multiple delimeters
+    var reduce = function(text, index) {
+      if (delimeters[index] && text.trim().length) {
+
+        if (text.indexOf(delimeters[index]) > -1) {
+
+          var s = 1;
+          var splitted = text.split(delimeters[index]);
+          splitted.forEach(function(words){
+            if (words.length) {
+              var suffix = '';
+              if (s != splitted.length) {
+                suffix = delimeters[index];
+              }
+              words = (words + suffix).trim();
+            }
+
+            if (words.length && words.length <= limit) {
+              sentences.push(words);
+            }
+            else {
+              reduce(words, index + 1);
+            }
+
+            s++;
+          });
+        }
+        else {
+          reduce(text, index + 1);
+        }
+      }
+      else if (text.length) {
+        var regexp = new RegExp('.{1,' + limit + '}', 'g'); // /.{1,100}/g
+        var parts = text.match(regexp);
+        while (parts.length > 0) {
+          sentences.push(parts.shift().trim());
+        }
+      }
+    };
+    
+    reduce(text, 0);
+
+    var result = [];
+    // merge short sentences
+    sentences.forEach(function(sentence){
+      if (! result.length) {
+        result.push(sentence);
+      }
+      else if (result[result.length - 1].length + sentence.length + 1 <= limit) {
+        result[result.length - 1] += ' ' + sentence;
+      }
+      else {
+        result.push(sentence);
+      }
+    });
+
+    return result;
+  };
+
   var SpeechSynthesisUtterancePolyfill = function(text){
 
     /**
@@ -116,49 +178,13 @@
       }, false);
 
       // Google Translate limit is 100 characters, we need to split longer text
-      // we use the space delimeter
+      // we use the multiple delimeters
 
       var LIMIT = 100;
       if (that.text.length > LIMIT) {
 
-        var text = '';
-        var words = that.text.split(' ');
+        sentences = splitText(that.text, ['.', '!', '?', ':', ';', ',', ' '], LIMIT);
 
-        for (var w = 0; w < words.length; w++) {
-          var word = words[w];
-
-          // if the text + word are no longer than 100 characters
-          if (text.length + word.length + 1 < LIMIT) {
-            text = text.length ? text + ' ' : text;
-            text += word;
-          }
-          else {
-            // we push the text into sentences
-            if (text.length > 0) {
-              sentences.push(text);
-              text = word;
-            }
-
-            // if the word is still long we need to split it again
-            // now we use hard character count delimeter
-            // and push its parts into sentences
-            if (word.length > LIMIT) {
-              var regexp = new RegExp('.{1,' + LIMIT + '}', 'g'); // /.{1,100}/g
-              var parts = word.match(regexp);
-              while (parts.length > 0) {
-                sentences.push(parts.shift());
-              }
-
-              text = '';
-            }
-            
-          }
-        }
-
-        // if we have remaining text we push it into senteces
-        if (text.length > 0) {
-          sentences.push(text);
-        }
       }
       else {
         sentences.push(that.text);
