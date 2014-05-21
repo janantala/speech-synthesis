@@ -36,9 +36,13 @@ This will copy the files into your `bower_components` folder, along with its dep
 And finally use speech synthesis:
 
 ```js
-// Initialize polyfill
-var fallbackSpeechSynthesis = window.speechSynthesis || window.speechSynthesisPolyfill;
-var fallbackSpeechSynthesisUtterance = window.SpeechSynthesisUtterance || window.SpeechSynthesisUtterancePolyfill;
+// Initialize speech synthesis, we use polyfill only when speech synthesis is not available
+var fallbackSpeechSynthesis = window.getSpeechSynthesis();
+var fallbackSpeechSynthesisUtterance = window.getSpeechSynthesisUtterance();
+
+// To use polyfill directly call
+// var fallbackSpeechSynthesis = window.speechSynthesisPolyfill;
+// var fallbackSpeechSynthesisUtterance = window.SpeechSynthesisUtterancePolyfill;
 
 var u = new fallbackSpeechSynthesisUtterance('Hello World');
 u.lang = 'en-US';
@@ -57,13 +61,22 @@ u.corsProxyServer = 'http://www.corsproxy.com/';
 
 
 ### Identify the polyfill usage
-To identify the pollyfill usage you can use `isPolyfill` attributes.
+To identify the polyfill usage you can use `isPolyfill` attributes.
 
 ```js
 var u = new window.SpeechSynthesisUtterancePolyfill('Hello World');
 u.isPolyfill; // true
 
 window.speechSynthesisPolyfill.isPolyfill; // true
+```
+
+### Native support detection
+To detect native speech synthesis support use:
+
+```js
+window.nativeSpeechSynthesisSupport(); // true, false
+window.getSpeechSynthesis(); // returns native implementation or polyfill
+window.getSpeechSynthesisUtterance(); // returns native implementation or polyfill
 ```
 
 # Supported attributes and methods

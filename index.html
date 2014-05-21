@@ -199,8 +199,8 @@
 
     <p class="code code-html text-left">
       <span class="code-yellow">// Initialize polyfill</span><br>
-      <span class="">var fallbackSpeechSynthesis = window.speechSynthesis || window.speechSynthesisPolyfill;</span><br>
-      <span class="">var fallbackSpeechSynthesisUtterance = window.SpeechSynthesisUtterance || window.SpeechSynthesisUtterancePolyfill;</span><br>
+      <span class="">var fallbackSpeechSynthesis = window.getSpeechSynthesis();</span><br>
+      <span class="">var fallbackSpeechSynthesisUtterance = window.getSpeechSynthesisUtterance();</span><br>
       <br>
 
       <span class="">var u = new fallbackSpeechSynthesisUtterance('Hello World');</span><br>
@@ -259,10 +259,15 @@
 <script type="text/javascript">
 
 // Initialize polyfill
-// var fallbackSpeechSynthesis = window.speechSynthesis || window.speechSynthesisPolyfill;
 var fallbackSpeechSynthesis = window.speechSynthesisPolyfill;
-// var fallbackSpeechSynthesisUtterance = window.SpeechSynthesisUtterance || window.SpeechSynthesisUtterancePolyfill;
 var fallbackSpeechSynthesisUtterance = window.SpeechSynthesisUtterancePolyfill;
+
+// In real project you want to use this:
+// var fallbackSpeechSynthesis = window.getSpeechSynthesis();
+// var fallbackSpeechSynthesisUtterance = window.getSpeechSynthesisUtterance();
+
+var fu = new fallbackSpeechSynthesisUtterance('Hello there!');
+fallbackSpeechSynthesis.speak(fu);
 
 angular.module('adaptiveApp', []).
 
