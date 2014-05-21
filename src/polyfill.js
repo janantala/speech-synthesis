@@ -352,8 +352,24 @@
     };
   };
 
+  var nativeSpeechSynthesisSupport = function(){
+    return window.speechSynthesis && window.SpeechSynthesisUtterance ? true : false;
+  };
+
+  var getSpeechSynthesis = function(){
+    return nativeSpeechSynthesisSupport() ? window.speechSynthesis : window.speechSynthesisPolyfill;
+  };
+
+  var getSpeechSynthesisUtterance = function(){
+    return nativeSpeechSynthesisSupport() ? window.SpeechSynthesisUtterance : window.SpeechSynthesisUtterancePolyfill;
+  };
+
   window.SpeechSynthesisUtterancePolyfill = SpeechSynthesisUtterancePolyfill;
   window.speechSynthesisPolyfill = new SpeechSynthesisPolyfill();
+
+  window.nativeSpeechSynthesisSupport = nativeSpeechSynthesisSupport;
+  window.getSpeechSynthesis = getSpeechSynthesis;
+  window.getSpeechSynthesisUtterance = getSpeechSynthesisUtterance;
 
 })(window, document);
 
