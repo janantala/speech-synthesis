@@ -53,7 +53,7 @@ gulp.task('build', function() {
     .pipe(uglify({'evil': true}))
     .pipe(header(banner, { pkg: pkg, year: year }))
     .pipe(rename({
-      ext: ".min.js"
+      extname: ".min.js"
     }))
     .pipe(gulp.dest(''));
 });
