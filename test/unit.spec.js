@@ -82,5 +82,34 @@ describe('unit specs', function() {
       expect(u.isPolyfill).toBe(true);
     }); 
   });
-  
+
+  describe('nativeSpeechSynthesisSupport', function() {
+    it('should be defined', function() {
+      expect(window.nativeSpeechSynthesisSupport).toBeDefined();
+    });
+
+    it('should be object', function() {
+      expect(typeof window.nativeSpeechSynthesisSupport).toBe('function');
+    });
+  });
+
+  describe('getSpeechSynthesis', function() {
+    it('should be defined', function() {
+      expect(window.getSpeechSynthesis).toBeDefined();
+    });
+
+    it('should be object', function() {
+      expect(typeof window.getSpeechSynthesis).toBe('function');
+    });
+  });
+
+  describe('getSpeechSynthesisUtterance', function() {
+    it('should be defined', function() {
+      expect(window.getSpeechSynthesisUtterance).toBeDefined();
+    });
+
+    it('should be object', function() {
+      expect(typeof window.getSpeechSynthesisUtterance).toBe('function');
+    });
+  });
 });
