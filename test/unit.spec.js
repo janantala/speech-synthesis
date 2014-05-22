@@ -88,8 +88,12 @@ describe('unit specs', function() {
       expect(window.nativeSpeechSynthesisSupport).toBeDefined();
     });
 
-    it('should be object', function() {
+    it('should be function', function() {
       expect(typeof window.nativeSpeechSynthesisSupport).toBe('function');
+    });
+
+    it('should be boolean', function() {
+      expect(typeof window.nativeSpeechSynthesisSupport()).toBe('boolean');
     });
   });
 
@@ -98,8 +102,20 @@ describe('unit specs', function() {
       expect(window.getSpeechSynthesis).toBeDefined();
     });
 
-    it('should be object', function() {
+    it('should be function', function() {
       expect(typeof window.getSpeechSynthesis).toBe('function');
+    });
+
+    it('should return polyfill if there is no native support', function() {
+      if (!window.nativeSpeechSynthesisSupport()){
+        expect(window.getSpeechSynthesis().isPolyfill).toBe(true);
+      }
+    });
+
+    it('should return native object if available', function() {
+      if (window.nativeSpeechSynthesisSupport()){
+        expect(window.getSpeechSynthesis().isPolyfill).toBeUndefined();
+      }
     });
   });
 
@@ -108,8 +124,26 @@ describe('unit specs', function() {
       expect(window.getSpeechSynthesisUtterance).toBeDefined();
     });
 
-    it('should be object', function() {
+    it('should be function', function() {
       expect(typeof window.getSpeechSynthesisUtterance).toBe('function');
+    });
+
+    it('should return polyfill if there is no native support', function() {
+      var fallbackSpeechSynthesisUtterance = window.getSpeechSynthesisUtterance();
+      var u = new fallbackSpeechSynthesisUtterance('Hello there!');
+
+      if (!window.nativeSpeechSynthesisSupport()){
+        expect(u.isPolyfill).toBe(true);
+      }
+    });
+
+    it('should return native object if available', function() {
+      var fallbackSpeechSynthesisUtterance = window.getSpeechSynthesisUtterance();
+      var u = new fallbackSpeechSynthesisUtterance('Hello there!');
+
+      if (window.nativeSpeechSynthesisSupport()){
+        expect(u.isPolyfill).toBeUndefined();
+      }
     });
   });
 });
